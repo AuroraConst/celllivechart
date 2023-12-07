@@ -14,14 +14,17 @@ object Grid :
         println(g(row)(col))
     
 
-  def grid(rows:Int,cols:Int) = 
-      val g = Array.ofDim[GridCell ](cols, rows)
-      
+  /**
+    * create 2 dim array of GridCell
+    */
+  def grid(cols:Int,rows:Int) = 
+      val g = Array.ofDim[GridCell ](rows, cols)
       val maxRow = g.length - 1
       val maxCol = g(0).length -1 
-      for(row <- 0 to maxRow;
-          col <- 0 to maxCol
-      )  g(row)(col) = GridCell(s"\"$row,$col\"")
+      
+      for(col <- 0 to maxCol;
+          row <- 0 to maxRow
+      )  g(row)(col) = GridCell(s"\"$col,$row\"")
       g  
   end grid
 end Grid        
