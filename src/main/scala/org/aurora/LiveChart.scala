@@ -34,6 +34,7 @@ object Main:
   //   )
   // end renderDataList
 
+  //TODO customize spacing of editors using css
   def renderDataTable(): Element =
     table(
       thead(tr(th("Label"), th("Price"), th("Count"), th("Full price"), th("Action"))),
