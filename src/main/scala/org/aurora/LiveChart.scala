@@ -52,14 +52,10 @@ object Main:
   end renderDataTable
 
   def renderDataItem(id: DataItemID, itemSignal: Signal[DataItem]): Element =
+    import org.aurora.model.ui.*
     tr(
       td(
-        inputForString(
-          itemSignal.map(_.label),
-          makeDataItemUpdater(id, { (item, newLabel) =>
-            item.copy(label = newLabel)
-          })
-        )
+        cellTextInput
       ),
       td(
         inputForDouble(
