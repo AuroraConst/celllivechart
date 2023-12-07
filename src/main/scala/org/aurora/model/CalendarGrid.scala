@@ -8,8 +8,12 @@ case class CalendarGrid (startDate:Date, numWeeks:Int):
   lazy val grid = Grid.grid(numWeeks,7)
   
 
+
   //xcoordinate
   def x(d:Date) = 6 - d.dayOfWeek.ordinal 
   //ycoordinate
   def y(d:Date) = d.differenceInDays(firstMondayDate) / 7
+
+  def get(x:Int,y:Int) =
+    grid(y)(x)
 
