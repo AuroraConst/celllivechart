@@ -11,14 +11,15 @@ package object ui :
   enum EditorToggleState(colorString:String):
     case StateOne extends EditorToggleState("green")
     case StateTwo extends EditorToggleState("blue")
-    
-    def color = colorString
+    //Note: you have to surface properties of the enum to the outside
+    lazy val color = colorString
     def nextState = this match
       case StateOne => StateTwo
       case StateTwo => StateOne
 
   import EditorToggleState._  
 
+  //TODO map multiple inputs to a Var[datatype] so that you can change focus depending on key stroke
   def cellTextInput: HtmlElement = 
     val v = Var("")
     val toggleState = Var(StateOne)
@@ -30,5 +31,7 @@ package object ui :
         typ := "text",
         onInput.mapToValue --> v,
         onDblClick--> (_ => toggleState.update(_.nextState)),
+        onKeyUp --> (e => if (e.keyCode == 13) toggleState.update(_.nextState)
       )
+    )
     
