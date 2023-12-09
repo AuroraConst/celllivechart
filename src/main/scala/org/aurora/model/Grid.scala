@@ -1,38 +1,15 @@
 package org.aurora.model
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
+import org.aurora.model.ui.cellTextInput
 
 
-trait Showable[T]:
-  extension (t:T) def show():String
 
-given Showable[GridCell] with
-  extension(g: GridCell) 
-    def show(): String = s"${g.inputElement}:(${g.x},${g.y})"
-
-given Showable[Grid] with
-  extension(g: Grid)
-    def show(): String =
-      val sb = new StringBuilder("")
-      for 
-        r <- 0 to g.rows-1
-        c <- 0 to g.cols-1
-      do 
-        sb ++=  g.get(c,r).show() 
-        if(c == g.cols -1)
-          sb ++= "\n"   
-        else  
-          sb ++= ","
-      s"$sb"
-
-
-case class GridCell(inputElement:Option[HtmlElement],x:Int,y:Int)
+case class GridCell(grid:Grid,x:Int,y:Int) :
+  lazy val inputElement = cellTextInput
 
 object GridCell :
-  def apply(inputElement:Option[HtmlElement],x:Int,y:Int) =  new GridCell(inputElement,x,y)
-
-
-
+  def apply(grid:Grid,x:Int,y:Int) =  new GridCell(grid,x,y)
 
 
 
@@ -44,16 +21,18 @@ case class Grid(cols:Int,rows:Int) :
     
     for(col <- 0 to maxCol;
         row <- 0 to maxRow
-    )  g(row)(col) = GridCell(None,col,row)
+    )  g(row)(col) = GridCell(this,col,row)
     g
   end createGrid
 
   lazy val grid = createGrid(cols,rows)
 
-  def get(x:Int, y:Int) = grid(y)(x)
 
-  def inputElement(x:Int,y:Int) =  
-    grid(y)(x) = get(x,y).copy(  inputElement = Some( ???))
+
+  def get(x:Int, y:Int) = grid(y)(x)
+  def inputElement(x:Int, y:Int) =
+     grid(y)(x).inputElement
+
 
   /**
     * create 2 dim array of GridCell
