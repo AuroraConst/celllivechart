@@ -8,14 +8,18 @@ package object typeclasses :
   trait IdCoordinate[T] :
     extension (t:T)
       def id:String
-      def coordinate(id:String) :Coordinates
+      def id(x:Int,y:Int):String 
+      def coordinate(id:String) : Coordinates
 
   given IdCoordinate[GridCell] with
     extension(g: GridCell) 
-      def id:String = s"${g.x},${g.y}"
+      def id:String  = s"${g.x},${g.y}"
+      def id(x:Int,y:Int) = s"${x},${y}"
+
       def coordinate(id:String) :Coordinates = 
-        val Array(x,y) = id.split(",")
-        Coordinates(x.toInt,y.toInt)   
+        val c = id.split(",")
+        Coordinates(c(0).toInt,c(1).toInt)
+       
   
   trait Showable[T]:
     extension (t:T) def show():String
