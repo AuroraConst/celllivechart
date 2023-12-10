@@ -3,10 +3,11 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import org.aurora.model.ui.cellTextInput
 
+case class Coordinates(x:Int,y:Int)
 
-
+import org.aurora.model.ui.typeclasses.given
 case class GridCell(grid:Grid,x:Int,y:Int) :
-  lazy val inputElement = cellTextInput(value,s"cell-$x-$y")
+  lazy val inputElement = cellTextInput(value,this.id)
   lazy val value = Var("")
 
 object GridCell :

@@ -1,10 +1,21 @@
 package org.aurora.model.ui
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
-import org.aurora.model.{Grid,GridCell}
+import org.aurora.model.{Grid,GridCell,Coordinates}
 import org.scalajs.dom.HTMLTableElement
 
 package object typeclasses :
+  trait IdCoordinate[T] :
+    extension (t:T)
+      def id:String
+      def coordinate(id:String) :Coordinates
+
+  given IdCoordinate[GridCell] with
+    extension(g: GridCell) 
+      def id:String = s"${g.x},${g.y}"
+      def coordinate(id:String) :Coordinates = 
+        val Array(x,y) = id.split(",")
+        Coordinates(x.toInt,y.toInt)   
   
   trait Showable[T]:
     extension (t:T) def show():String
