@@ -20,7 +20,7 @@ package object ui :
   import EditorToggleState._  
 
   //TODO map multiple inputs to a Var[datatype] so that you can change focus depending on key stroke
-  
+  //TODO use less or CSS to customize look
   def cellTextInput: HtmlElement = 
     val v = Var("")
     val toggleState = Var(StateOne)
@@ -35,5 +35,5 @@ package object ui :
         onKeyUp --> (e => if (e.keyCode == 13) toggleState.update(_.nextState)
       )
     )
-    
+
     

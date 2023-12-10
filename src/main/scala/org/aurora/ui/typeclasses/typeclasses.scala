@@ -44,7 +44,7 @@ package object typeclasses :
   given HtmlAble[Grid] with
     extension(g: Grid) 
       def htmlElement(): HtmlElement = 
-        val row = g.xRange.map(x => td(g.get(x,0).inputElement  ))
+        val row = g.xRange.map(x => td(g.get(x,0).inputElement  )) 
         table(
             thead(tr(th("Mon"), th("Tue"), th("Wed"), th("Thu"), th("Fri"), th("Sat"),th("Sun"))),
             tbody(tr(row*))
