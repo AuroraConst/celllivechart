@@ -6,7 +6,8 @@ import org.aurora.model.ui.cellTextInput
 
 
 case class GridCell(grid:Grid,x:Int,y:Int) :
-  lazy val inputElement = cellTextInput
+  lazy val inputElement = cellTextInput(value)
+  lazy val value = Var("")
 
 object GridCell :
   def apply(grid:Grid,x:Int,y:Int) =  new GridCell(grid,x,y)
@@ -29,10 +30,10 @@ case class Grid(cols:Int,rows:Int) :
   end createGrid
 
 
-
   def get(x:Int, y:Int) = grid(y)(x)
+  
   def inputElement(x:Int, y:Int) =
-      grid(y)(x).inputElement
+    grid(y)(x).inputElement
 
 
   /**

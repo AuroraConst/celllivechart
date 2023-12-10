@@ -24,67 +24,31 @@ object Main:
   def appElement(): Element =
     div(
        h1("Chart", img(src:= "/vite.svg")),
-       Grid(7,2).htmlElement(),
-      renderDataTable(),
-      // renderDataList(),
+       Grid(7,10).htmlElement(),
     )
   end appElement
 
-  // def renderDataList(): Element =
-  //   ul(
-  //     children <-- dataSignal.split(_.id) { (id, initial, itemSignal) =>
-  //       li(child.text <-- itemSignal.map(item => s"${item.count} ${item.label}"))
-  //     }
-  //   )
-  // end renderDataList
 
 
   //TODO customize spacing of editors using css
-  def renderDataTable(): Element =
-    table(
-      thead(tr(th("Label"), th("Price"), th("Count"), th("Full price"), th("Action"))),
-      tbody(
-        children <-- dataSignal.split(_.id) { (id, initial, itemSignal) =>
-          renderDataItem(id, itemSignal)
-        },
-      ),
-      tfoot(tr(
-        td(button("➕", onClick --> (_ => addDataItem(DataItem())))),
-        td(),
-        td(),
-        td(child.text <-- dataSignal.map(data => "%.2f".format(data.map(_.fullPrice).sum))),
-      )),
-    )
-  end renderDataTable
+  // def renderDataTable(): Element =
+  //   table(
+  //     thead(tr(th("Label"), th("Price"), th("Count"), th("Full price"), th("Action"))),
+  //     tbody(
+  //       children <-- dataSignal.split(_.id) { (id, initial, itemSignal) =>
+  //         renderDataItem(id, itemSignal)
+  //       },
+  //     ),
+  //     tfoot(tr(
+  //       td(button("➕", onClick --> (_ => addDataItem(DataItem())))),
+  //       td(),
+  //       td(),
+  //       td(child.text <-- dataSignal.map(data => "%.2f".format(data.map(_.fullPrice).sum))),
+  //     )),
+  //   )
+  // end renderDataTable
 
-  def renderDataItem(id: DataItemID, itemSignal: Signal[DataItem]): Element =
-    import org.aurora.model.ui.*
-    tr(
-      td(
-        cellTextInput
-      ),
-      td(
-        inputForDouble(
-          itemSignal.map(_.price),
-          makeDataItemUpdater(id, { (item, newPrice) =>
-            item.copy(price = newPrice)
-          })
-        )
-      ),
-      td(
-        inputForInt(
-          itemSignal.map(_.count),
-          makeDataItemUpdater(id, { (item, newCount) =>
-            item.copy(count = newCount)
-          })
-        )
-      ),
-      td(
-        child.text <-- itemSignal.map(item => "%.2f".format(item.fullPrice))
-      ),
-      td(button("🗑️", onClick --> (_ => removeDataItem(id)))),
-    )
-  end renderDataItem
+
 
   def inputForString(valueSignal: Signal[String],
       valueUpdater: Observer[String]): Input =
