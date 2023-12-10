@@ -18,9 +18,13 @@ object Main:
   val model = new Model
   import model.*
 
+  import org.aurora.model.*
+  import org.aurora.model.ui.typeclasses.given
+
   def appElement(): Element =
     div(
        h1("Chart", img(src:= "/vite.svg")),
+       Grid(7,2).htmlElement(),
       renderDataTable(),
       // renderDataList(),
     )
@@ -33,6 +37,7 @@ object Main:
   //     }
   //   )
   // end renderDataList
+
 
   //TODO customize spacing of editors using css
   def renderDataTable(): Element =

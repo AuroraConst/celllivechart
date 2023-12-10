@@ -43,5 +43,8 @@ object typeclasses :
 
   given HtmlAble[Grid] with
     extension(g: Grid) 
-      def htmlElement(): HtmlElement = table()
-
+      def htmlElement(): HtmlElement = 
+        table(
+            thead(tr(th("Mon"), th("Tue"), th("Wed"), th("Thu"), th("Fri"))),
+            tbody(tr(Array(td("hey"),td("you"))*))
+        )
