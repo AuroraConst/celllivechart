@@ -21,7 +21,7 @@ package object ui :
 
   //TODO map multiple inputs to a Var[datatype] so that you can change focus depending on key stroke
   
-  def cellTextInput(v:Var[String]): HtmlElement = 
+  def cellTextInput(v:Var[String], id:String): HtmlElement = 
     val toggleState = Var(StateOne) 
 
     div(

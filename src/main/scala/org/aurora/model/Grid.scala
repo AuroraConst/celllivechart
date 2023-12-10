@@ -6,7 +6,7 @@ import org.aurora.model.ui.cellTextInput
 
 
 case class GridCell(grid:Grid,x:Int,y:Int) :
-  lazy val inputElement = cellTextInput(value)
+  lazy val inputElement = cellTextInput(value,s"cell-$x-$y")
   lazy val value = Var("")
 
 object GridCell :
