@@ -14,24 +14,25 @@ object GridCell :
 
 
 case class Grid(cols:Int,rows:Int) :
-  private def createGrid(cols:Int,rows:Int) = 
+  private lazy val grid = createGrid(cols,rows)
+  lazy val xRange = (0 to cols-1)
+  lazy val yRange = (0 to rows-1)
+
+  
+  private def createGrid(cols:Int,rows:Int):Array[Array[GridCell]] = 
     val g = Array.ofDim[GridCell ](rows, cols)
-    val maxRow = g.length - 1
-    val maxCol = g(0).length -1 
     
-    for(col <- 0 to maxCol;
-        row <- 0 to maxRow
+    for(col <- xRange;
+        row <- yRange
     )  g(row)(col) = GridCell(this,col,row)
     g
   end createGrid
-
-  lazy val grid = createGrid(cols,rows)
 
 
 
   def get(x:Int, y:Int) = grid(y)(x)
   def inputElement(x:Int, y:Int) =
-     grid(y)(x).inputElement
+      grid(y)(x).inputElement
 
 
   /**

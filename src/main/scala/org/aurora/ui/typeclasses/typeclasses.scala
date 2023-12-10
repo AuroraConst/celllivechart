@@ -4,7 +4,7 @@ import org.scalajs.dom
 import org.aurora.model.{Grid,GridCell}
 import org.scalajs.dom.HTMLTableElement
 
-object typeclasses :
+package object typeclasses :
   
   trait Showable[T]:
     extension (t:T) def show():String
@@ -44,7 +44,8 @@ object typeclasses :
   given HtmlAble[Grid] with
     extension(g: Grid) 
       def htmlElement(): HtmlElement = 
+        val row = g.xRange.map(x => td(g.get(x,0).inputElement  ))
         table(
-            thead(tr(th("Mon"), th("Tue"), th("Wed"), th("Thu"), th("Fri"))),
-            tbody(tr(Array(td("hey"),td("you"))*))
+            thead(tr(th("Mon"), th("Tue"), th("Wed"), th("Thu"), th("Fri"), th("Sat"),th("Sun"))),
+            tbody(tr(row*))
         )
