@@ -31,22 +31,6 @@ object Main:
 
 
   //TODO customize spacing of editors using css
-  // def renderDataTable(): Element =
-  //   table(
-  //     thead(tr(th("Label"), th("Price"), th("Count"), th("Full price"), th("Action"))),
-  //     tbody(
-  //       children <-- dataSignal.split(_.id) { (id, initial, itemSignal) =>
-  //         renderDataItem(id, itemSignal)
-  //       },
-  //     ),
-  //     tfoot(tr(
-  //       td(button("➕", onClick --> (_ => addDataItem(DataItem())))),
-  //       td(),
-  //       td(),
-  //       td(child.text <-- dataSignal.map(data => "%.2f".format(data.map(_.fullPrice).sum))),
-  //     )),
-  //   )
-  // end renderDataTable
 
 
 
