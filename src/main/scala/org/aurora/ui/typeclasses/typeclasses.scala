@@ -19,7 +19,9 @@ package object typeclasses :
       def coordinate(id:String) :Coordinates = 
         val c = id.split(",")
         Coordinates(c(0).toInt,c(1).toInt)
-       
+
+      def coordinate() :Coordinates = 
+        Coordinates(g.x,g.y) 
   
   trait Showable[T]:
     extension (t:T) def show():String

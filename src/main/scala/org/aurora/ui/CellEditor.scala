@@ -7,6 +7,8 @@ import org.scalajs.dom
 
 import scala.scalajs.js
 import typings.std.stdStrings.focusin
+import scala.scalajs.js.`new`
+import typings.std.stdStrings.focusout
 
 package object ui :
   enum EditorToggleState(colorString:String):
@@ -27,31 +29,39 @@ package object ui :
   def cellTextInput(gc:GridCell): HtmlElement = 
     val toggleState = Var(StateOne) 
     import org.aurora.model.ui.typeclasses.given
-    div(
-      child.text <-- gc.value.signal,
       input(
-        backgroundColor <-- toggleState.signal.map(_.color)),
+        backgroundColor <-- toggleState.signal.map(_.color),
         typ := "text",
         onInput.mapToValue --> gc.value,
         onDblClick--> (_ => toggleState.update(_.nextState)),
         onKeyUp --> (e => 
-          // dom.window.console.log(s"focused ${gc.id}!!!!!!!!!!!!!!!!!")
           e.keyCode match
-            case 13 => toggleState.update(_.nextState)
+            case 40 =>  //down cursor
+              val newCoord = gc.coordinate().addY(1)
+              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus()
+             
+            case 38 => //up cursor
+              val newCoord = gc.coordinate().addY(-1)
+              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus()
+            case 37 => //left cursor
+              val newCoord = gc.coordinate().addX(-1)
+              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus() 
+            case 39 => //right cursor
+              val newCoord = gc.coordinate().addX(1)
+              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus()   
             case 9 => 
               dom.window.console.log(s"tabbed ${gc.id}tab tab tab ")
 
             case _ => ()
-
-          
           ),
-        onClick --> (_ => 
-          dom.window.console.log(s"clicked ${gc.id}xxxxxxxxxxxxxx")
-          gc.grid.focusedCoordinate.update(_ => gc.id)),  
         onFocus --> (e => 
-          //TODO ERROR: this does not seem to capture any events??
-          //I have to use the keyUp to capture the tab event instead
-          dom.window.console.log(s"$e focused ${gc.id}####")
+          dom.window.console.log(s"${e.detail} focused ${gc.id}####")
+          
           gc.grid.focusedCoordinate.update(_ => gc.id) 
+          toggleState.update(_ => StateFocused)
         ),
-    )
+        onBlur --> (e => //focus out
+          toggleState.update(_ => StateOne)
+        ),
+
+      )
