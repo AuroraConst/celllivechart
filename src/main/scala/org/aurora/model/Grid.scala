@@ -10,8 +10,6 @@ case class GridCell(grid:Grid,x:Int,y:Int) :
   lazy val inputElement = cellTextInput(this)
   lazy val value = Var("")
 
-object GridCell :
-  def apply(grid:Grid,x:Int,y:Int) =  new GridCell(grid,x,y)
 
 
 
@@ -20,6 +18,7 @@ case class Grid(cols:Int,rows:Int) :
   lazy val xRange = (0 to cols-1)
   lazy val yRange = (0 to rows-1)
 
+  val focusedCoordinate = Var("")
   
   private def createGrid(cols:Int,rows:Int):Array[Array[GridCell]] = 
     val g = Array.ofDim[GridCell ](rows, cols)

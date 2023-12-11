@@ -5,6 +5,7 @@ import scala.scalajs.js.annotation.*
 
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
+import typings.std.stdStrings.text
 
 @main
 def LiveChart(): Unit =
@@ -22,9 +23,12 @@ object Main:
   import org.aurora.model.ui.typeclasses.given
 
   def appElement(): Element =
+    val grid = Grid(7,10)
     div(
        h1("Chart", img(src:= "/vite.svg")),
-       Grid(7,10).htmlElement(),
+       input(value <-- grid.focusedCoordinate.signal
+       ),
+       grid.htmlElement(),
     )
   end appElement
 
