@@ -7,7 +7,7 @@ case class Coordinates(x:Int,y:Int)
 
 import org.aurora.model.ui.typeclasses.given
 case class GridCell(grid:Grid,x:Int,y:Int) :
-  lazy val inputElement = cellTextInput(value,this.id)
+  lazy val inputElement = cellTextInput(this)
   lazy val value = Var("")
 
 object GridCell :
@@ -37,9 +37,6 @@ case class Grid(cols:Int,rows:Int) :
     grid(y)(x).inputElement
 
 
-  /**
-    * create 2 dim array of GridCell
-    */
 
 
 

@@ -21,15 +21,15 @@ package object ui :
 
   //TODO map multiple inputs to a Var[datatype] so that you can change focus depending on key stroke
   
-  def cellTextInput(v:Var[String], id:String): HtmlElement = 
+  def cellTextInput(gc:GridCell): HtmlElement = 
     val toggleState = Var(StateOne) 
 
     div(
-      child.text <-- v.signal,
+      child.text <-- gc.value.signal,
       input(
         backgroundColor <-- toggleState.signal.map(_.color)),
         typ := "text",
-        onInput.mapToValue --> v,
+        onInput.mapToValue --> gc.value,
         onDblClick--> (_ => toggleState.update(_.nextState)),
         onKeyUp --> (e => if (e.keyCode == 13) toggleState.update(_.nextState)
       )
