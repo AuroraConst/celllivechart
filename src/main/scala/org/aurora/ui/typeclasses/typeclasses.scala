@@ -64,11 +64,13 @@ package object typeclasses :
         s"$sb"     
 
 
-  //TODO trait bounded navigation typeclass
   trait BoundedAccess[T] :
     extension (t:T)
       def withinBoundsX(x:Int):Boolean
       def withinBoundsY(y:Int):Boolean
+      def withinBoundsXY(x:Int,y:Int) : Boolean = 
+        withinBoundsX(x) && withinBoundsY(y)
+      // def withinBounds(d:D) : Boolean
 
 
   given BoundedAccess[Grid] with
@@ -77,6 +79,13 @@ package object typeclasses :
         x >= 0 && x < g.cols
       def withinBoundsY(y:Int):Boolean = 
         y >= 0 && y < g.rows
+
+  given BoundedAccess[CalendarGrid] with
+    extension(cg: CalendarGrid) 
+      def withinBoundsX(x:Int):Boolean = 
+        cg.grid.withinBoundsX(x) 
+      def withinBoundsY(y:Int):Boolean = 
+        cg.grid.withinBoundsX(y)      
 
 
 

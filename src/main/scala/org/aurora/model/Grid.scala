@@ -13,9 +13,22 @@ import org.aurora.model.ui.typeclasses.given
 case class GridCell(grid:Grid,x:Int,y:Int) :
   lazy val inputElement = cellTextInput(this)
   lazy val value = Var("")
+
+trait GridTrait[T] :
+  lazy val g:Array[Array[T]] 
+  def createGrid(cols:Int,rows:Int):Array[Array[T]]
+
+//TODO make this concrete ?replace Grid with Grid1?
+abstract case class Grid1(cols:Int,rows:Int) extends GridTrait[GridCell] 
  
 
 
+
+
+
+
+
+     
 case class Grid(cols:Int,rows:Int) :
   private lazy val grid = createGrid(cols,rows)
   lazy val xRange = (0 to cols-1)
