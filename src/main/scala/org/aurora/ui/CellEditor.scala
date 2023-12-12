@@ -6,9 +6,6 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
 import scala.scalajs.js
-import typings.std.stdStrings.focusin
-import scala.scalajs.js.`new`
-import typings.std.stdStrings.focusout
 
 package object ui :
   enum EditorToggleState(colorString:String):
