@@ -3,6 +3,9 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import org.aurora.model.{Grid,GridCell,Coordinates}
 import org.scalajs.dom.HTMLTableElement
+import org.aurora.model.CalendarGrid
+import scala.scalajs.js.Date
+import org.aurora.model.calendardate.addDays
 
 package object typeclasses :
   trait IdCoordinate[T] :
@@ -45,6 +48,21 @@ package object typeclasses :
             sb ++= ","
         s"$sb"
 
+  given Showable[CalendarGrid] with
+    extension(cg: CalendarGrid)
+      def show(): String =
+        val sb = new StringBuilder("")
+        for 
+          r <- 0 to cg.numWeeks-1
+          c <- 0 to 6
+        do 
+          sb ++=  s"${(cg.grid.get(c,r)).show()}" 
+          if(c == 6)
+            sb ++= "\n"   
+          else  
+            sb ++= ","
+        s"$sb"     
+
 
   //TODO trait bounded navigation typeclass
   trait BoundedNavigation[T] :
@@ -52,14 +70,35 @@ package object typeclasses :
       def withinBoundsX(x:Int):Boolean
       def withinBoundsY(y:Int):Boolean
 
-      def next():T
-      def prev():T
+
+  given BoundedNavigation[Grid] with
+    extension(g: Grid) 
+      def withinBoundsX(x:Int):Boolean = 
+        x >= 0 && x < g.cols
+      def withinBoundsY(y:Int):Boolean = 
+        y >= 0 && y < g.rows
+
 
 
   //TODO trait conversion of T to (X:Int,Y:Int)    
-  trait CoordinateConversion[T] :
+  trait CoordinateDataConversion[T,U] :
     extension (t:T)
-      def toCoordinate():Coordinates
+      def toCoordinate(d:U):Coordinates
+      def toData(c:Coordinates):Option[U]
+
+  given CoordinateDataConversion[CalendarGrid,Date] with
+    extension(cg: CalendarGrid) 
+      def toCoordinate(d:Date): Coordinates = 
+        Coordinates(cg.x(d),cg.y(d))   
+      def toData(c:Coordinates): Option[Date] = 
+        if(cg.grid.withinBoundsX(c.x)  && cg.grid.withinBoundsY(c.y))
+          Some( cg.firstMondayDate.addDays(c.y*7 + c.x))
+           else 
+          None
+          
+       
+      def toData(x:Int, y:Int): Option[Date] = 
+        toData(Coordinates(x,y))
 
 
 

@@ -13,7 +13,7 @@ case class CalendarGrid (startDate:Date, numWeeks:Int):
   //xcoordinate
   def x(d:Date) = 6 - d.dayOfWeek.ordinal 
   //ycoordinate
-  def y(d:Date) = d.differenceInDays(firstMondayDate) / 7
+  def y(d:Date) = (d.differenceInDays(firstMondayDate) / 7).toInt
 
   def get(x:Int,y:Int) =
     grid.get(x,y)

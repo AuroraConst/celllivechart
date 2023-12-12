@@ -3,6 +3,7 @@ package org.aurora.model
 import org.scalatest._
 import wordspec._
 import matchers._
+import org.aurora.model.calendardate.dayOfWeek
 
 
 
@@ -27,7 +28,18 @@ class GridTest extends AnyWordSpec with should.Matchers{
       grid.get(0,0).id should be("0,0")
       grid.get(1,1).id should be("1,1")
       grid.get(0,0).coordinate("0,0") should be(Coordinates(0,0))
+    }
+  }
 
+
+  "typeclass CoordinateDataConversion" should {
+    "work" in {
+      import org.aurora.model.ui.typeclasses.given
+      import scala.scalajs.js.Date
+      import org.aurora.model.calendardate.*
+
+      val calgrid = CalendarGrid(new Date(),7)
+      calgrid.toData(Coordinates(0,0)).dayOfWeek == DayOfWeek.MON should be (true)
     }
   }
 }
