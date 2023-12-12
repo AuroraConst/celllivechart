@@ -46,6 +46,25 @@ package object typeclasses :
         s"$sb"
 
 
+  //TODO trait bounded navigation typeclass
+  trait BoundedNavigation[T] :
+    extension (t:T)
+      def withinBoundsX(x:Int):Boolean
+      def withinBoundsY(y:Int):Boolean
+
+      def next():T
+      def prev():T
+
+
+  //TODO trait conversion of T to (X:Int,Y:Int)    
+  trait CoordinateConversion[T] :
+    extension (t:T)
+      def toCoordinate():Coordinates
+
+
+
+
+
 
   trait HtmlAble[T]:
     extension (t:T) def htmlElement():HtmlElement
