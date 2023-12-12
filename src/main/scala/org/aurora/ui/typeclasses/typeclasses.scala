@@ -65,13 +65,13 @@ package object typeclasses :
 
 
   //TODO trait bounded navigation typeclass
-  trait BoundedNavigation[T] :
+  trait BoundedAccess[T] :
     extension (t:T)
       def withinBoundsX(x:Int):Boolean
       def withinBoundsY(y:Int):Boolean
 
 
-  given BoundedNavigation[Grid] with
+  given BoundedAccess[Grid] with
     extension(g: Grid) 
       def withinBoundsX(x:Int):Boolean = 
         x >= 0 && x < g.cols

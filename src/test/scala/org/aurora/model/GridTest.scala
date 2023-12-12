@@ -39,7 +39,7 @@ class GridTest extends AnyWordSpec with should.Matchers{
       import org.aurora.model.calendardate.*
 
       val calgrid = CalendarGrid(new Date(),7)
-      calgrid.toData(Coordinates(0,0)).dayOfWeek == DayOfWeek.MON should be (true)
+      calgrid.toData(Coordinates(0,0)).get.dayOfWeek == DayOfWeek.MON should be (true)
     }
   }
 }
