@@ -6,6 +6,7 @@ import scala.scalajs.js.annotation.*
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import typings.std.stdStrings.text
+import scala.scalajs.js.Date
 
 @main
 def LiveChart(): Unit =
@@ -23,12 +24,12 @@ object Main:
   import org.aurora.model.ui.typeclasses.given
 
   def appElement(): Element =
-    val grid = Grid(7,10)
+    val calgrid = CalendarGrid(new Date(),7)
     div(
        h1("Chart", img(src:= "/vite.svg")),
-       div(child.text <-- grid.focusedCoordinate.signal.map{s => s}
+       div(child.text <-- calgrid.grid.focusedCoordinate.signal.map{s => s}
        ),
-       grid.htmlElement(),
+       calgrid.htmlElement(),
     )
   end appElement
 

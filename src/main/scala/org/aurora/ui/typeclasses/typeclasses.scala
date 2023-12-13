@@ -107,10 +107,6 @@ package object typeclasses :
        data(Coordinates(x,y))
 
 
-
-
-
-
   trait HtmlAble[T]:
     extension (t:T) def htmlElement():HtmlElement
 
@@ -132,3 +128,8 @@ package object typeclasses :
             thead(tr(th("Mon"), th("Tue"), th("Wed"), th("Thu"), th("Fri"), th("Sat"),th("Sun"))),
             tbody(rows*)
         )
+
+  given HtmlAble[CalendarGrid] with
+    extension(cg:CalendarGrid)
+      def htmlElement(): HtmlElement =
+        cg.grid.htmlElement()
