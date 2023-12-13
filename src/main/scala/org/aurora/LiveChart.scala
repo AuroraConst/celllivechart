@@ -26,7 +26,7 @@ object Main:
     val grid = Grid(7,10)
     div(
        h1("Chart", img(src:= "/vite.svg")),
-       input(value <-- grid.focusedCoordinate.signal
+       div(child.text <-- grid.focusedCoordinate.signal.map{s => s}
        ),
        grid.htmlElement(),
     )
