@@ -7,9 +7,6 @@ case class CalendarGrid (startDate:Date, numWeeks:Int):
   lazy val firstMondayDate = startDate.firstMondayDate
   lazy val grid = Grid(numWeeks,7)
 
-  
-
-
   //xcoordinate
   def x(d:Date) = 6 - d.dayOfWeek.ordinal 
   //ycoordinate

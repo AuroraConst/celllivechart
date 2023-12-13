@@ -10,32 +10,32 @@ case class Coordinates(x:Int,y:Int) :
 
 
 import org.aurora.model.ui.typeclasses.given
-case class GridCell(grid:Grid,x:Int,y:Int) :
-  lazy val inputElement = cellTextInput(this)
-  lazy val value = Var("")
-
-trait GridTrait[T] :
-  lazy val g:Array[Array[T]] 
-  def createGrid(cols:Int,rows:Int):Array[Array[T]]
-
-//TODO make this concrete ?replace Grid with Grid1?
-abstract case class Grid1(cols:Int,rows:Int) extends GridTrait[GridCell] 
- 
-
-
-
-
-
-
-
-     
-case class Grid(cols:Int,rows:Int) :
-  private lazy val grid = createGrid(cols,rows)
+trait GridT[T](cols:Int,rows:Int) :
   lazy val xRange = (0 to cols-1)
   lazy val yRange = (0 to rows-1)
+  def get(x:Int,y:Int):Option[T]
+  def coordinate(data:T):Coordinates
+  def inBounds(c:Coordinates):Boolean =
+    inBounds(c.x,c.y)
+  def inBounds(x:Int,y:Int):Boolean =
+    xRange.contains(x) && yRange.contains(y)
+/**
+  * enforces that GridData must reference the parent Grid
+  *
+  * @param grid
+  * @param x
+  * @param y
+  */
+trait GridDataT[G](grid:G,x:Int,y:Int)
+
+case class GridCell(grid:Grid,x:Int,y:Int) extends GridDataT[Grid](grid,x,y) :
+  lazy val inputElement = cellTextInput(this)
+  lazy val value = Var("")
+     
+case class Grid(cols:Int,rows:Int) extends GridT[GridCell](cols,rows) :
+  private lazy val grid = createGrid(cols,rows)
 
   val focusedCoordinate = Var("")
-
   
   private def createGrid(cols:Int,rows:Int):Array[Array[GridCell]] = 
     val g = Array.ofDim[GridCell ](rows, cols)
@@ -46,11 +46,19 @@ case class Grid(cols:Int,rows:Int) :
     g
   end createGrid
 
-
-  def get(x:Int, y:Int) = grid(y)(x)
+  override def get(x:Int, y:Int) = 
+    inBounds(x,y) match{
+      case true => Some(grid(y)(x))
+      case false => None
+    } 
+  override  def coordinate(data:GridCell):Coordinates =
+    Coordinates(data.x,data.y)
   
   def inputElement(x:Int, y:Int) =
-    get(x,y).inputElement
+    for{d <- get(x,y)
+        inputElement <- Option(d)
+    }
+    yield inputElement
 
 
 

@@ -35,17 +35,17 @@ package object ui :
           e.keyCode match
             case 40 =>  //down cursor
               val newCoord = gc.coordinate().addY(1)
-              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus()
+              gc.grid.get(newCoord.x,newCoord.y).get.inputElement.ref.focus()
              
             case 38 => //up cursor
               val newCoord = gc.coordinate().addY(-1)
-              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus()
+              gc.grid.get(newCoord.x,newCoord.y).get.inputElement.ref.focus()
             case 37 => //left cursor
               val newCoord = gc.coordinate().addX(-1)
-              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus() 
+              gc.grid.get(newCoord.x,newCoord.y).get.inputElement.ref.focus() 
             case 39 => //right cursor
               val newCoord = gc.coordinate().addX(1)
-              gc.grid.get(newCoord.x,newCoord.y).inputElement.ref.focus()   
+              gc.grid.get(newCoord.x,newCoord.y).get.inputElement.ref.focus()   
             case 9 => 
               dom.window.console.log(s"tabbed ${gc.id}tab tab tab ")
 

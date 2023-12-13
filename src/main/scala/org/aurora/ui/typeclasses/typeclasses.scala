@@ -38,10 +38,10 @@ package object typeclasses :
       def show(): String =
         val sb = new StringBuilder("")
         for 
-          r <- 0 to g.rows-1
-          c <- 0 to g.cols-1
+          r <- g.yRange
+          c <- g.xRange
         do 
-          sb ++=  g.get(c,r).show() 
+          sb ++=  g.get(c,r).map(_.show()).getOrElse("error") 
           if(c == g.cols -1)
             sb ++= "\n"   
           else  
@@ -53,10 +53,10 @@ package object typeclasses :
       def show(): String =
         val sb = new StringBuilder("")
         for 
-          r <- 0 to cg.numWeeks-1
-          c <- 0 to 6
+          r <- cg.grid.yRange
+          c <- cg.grid.xRange
         do 
-          sb ++=  s"${(cg.grid.get(c,r)).show()}" 
+          sb ++=  s"${cg.grid.get(c,r).map(_.show()).getOrElse("error")}" 
           if(c == 6)
             sb ++= "\n"   
           else  
@@ -87,27 +87,24 @@ package object typeclasses :
       def withinBoundsY(y:Int):Boolean = 
         cg.grid.withinBoundsX(y)      
 
-
-
-  //TODO trait conversion of T to (X:Int,Y:Int)    
   trait CoordinateDataConversion[T,U] :
     extension (t:T)
-      def toCoordinate(d:U):Coordinates
-      def toData(c:Coordinates):Option[U]
+      def coordinate(d:U):Coordinates
+      def data(c:Coordinates):Option[U]
 
   given CoordinateDataConversion[CalendarGrid,Date] with
     extension(cg: CalendarGrid) 
-      def toCoordinate(d:Date): Coordinates = 
+      def coordinate(d:Date): Coordinates = 
         Coordinates(cg.x(d),cg.y(d))   
-      def toData(c:Coordinates): Option[Date] = 
+      
+      def data(c:Coordinates): Option[Date] = 
         if(cg.grid.withinBoundsX(c.x)  && cg.grid.withinBoundsY(c.y))
           Some( cg.firstMondayDate.addDays(c.y*7 + c.x))
            else 
           None
           
-       
-      def toData(x:Int, y:Int): Option[Date] = 
-        toData(Coordinates(x,y))
+      def data(x:Int, y:Int): Option[Date] = 
+       data(Coordinates(x,y))
 
 
 
@@ -128,7 +125,7 @@ package object typeclasses :
   given HtmlAble[Grid] with
     extension(g: Grid) 
       def htmlElement(): HtmlElement = 
-        def row(y:Int) = g.xRange.map(x => td(g.get(x,y).inputElement  )) 
+        def row(y:Int) = g.xRange.map(x => td(g.get(x,y).map(_.inputElement  ).getOrElse(div("error")))) 
         def rows = g.yRange.map(y => tr(row(y)))
 
         table(
