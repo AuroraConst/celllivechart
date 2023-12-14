@@ -1,4 +1,3 @@
 package org.aurora.brainstorm
 
 package object typeclasses :
-  
