@@ -30,9 +30,9 @@ trait GridDataT[G](grid:G,x:Int,y:Int)
 
 
 import scala.scalajs.js.Date
-case class GridCellDate[Grid](grid:Grid,d:Date,x:Int,y:Int) extends GridDataT[Grid](grid,x,y)
-  lazy val inputElement = cellTextInput(this)
-  lazy val value = Var(new Date())
+// case class GridCellDate[Grid](grid:Grid,d:Date,x:Int,y:Int) extends GridDataT[Grid](grid,x,y) :
+//   lazy val inputElement = cellTextInput(this)
+//   lazy val value = Var(new Date())
  
 
 
