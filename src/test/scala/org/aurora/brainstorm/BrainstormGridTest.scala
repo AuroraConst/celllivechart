@@ -27,12 +27,12 @@ class BrainstormGridTest extends AnyWordSpec with should.Matchers{
     }
 
     "Populate with a List of data" in {
-      val g = Grid(5,3)
-      val dataList = (0 until 15).toList
+      val g = Grid(5,5)
+      val dataList = (0 until 14 ).toList
 
       g.populate(dataList)
       g.grid.foreach{ row =>
-        val rowOfData = row.map(_.get.s)
+        val rowOfData = row.map(_.map(_.s).getOrElse("N"))
         val strRowOfData = rowOfData.foldLeft("") {
           (acc,s) => acc +s + ","
         }

@@ -21,7 +21,11 @@ given LBufferInitializerT[Grid,GridData] with
     def populate(s:List[Int]):Unit  =
       val iterator = s.toIterator
       g.leftRightFlatCollection.foreach{ 
-        c =>   g.update(c,GridData(g,c.x,c.y,iterator.next().toString()))
+        c =>   
+          val data = iterator.nextOption()
+          data.foreach {
+            d => g.update(c,GridData(g,  c.x,c.y,d.toString()) )
+          }
       }
 
       
@@ -36,15 +40,6 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
     ListBuffer[Option[GridData]]()
   lazy val grid = this.initLLBuffer
     
-  def coordinate(data:GridData):Coordinate =
-    data.coordinate
-  def data(c:Coordinate):Option[GridData] = 
-    if(xRange.contains(c.x) && yRange.contains(c.y))
-      grid(c.y)(c.x)
-      else
-      None
-  def update(c: Coordinate, data: GridData): Unit = 
-    grid(c.y)(c.x) = Some(data)
     
 
 case class GridData(g:Grid,x:Int,y:Int,s:String) extends  GridDataT[Grid,String](g,s) :

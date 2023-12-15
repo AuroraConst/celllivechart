@@ -10,9 +10,19 @@ trait GridT[D](cols:Int,rows:Int) :
     y <- yRange;
     x <- xRange
     ) yield(Coordinate(x,y))
-  def coordinate(data:D):Coordinate
-  def data(c:Coordinate):Option[D]
-  def update(c:Coordinate, data:D):Unit
+  
+  def inBounds(c:Coordinate): Boolean = 
+    xRange.contains(c.x) && yRange.contains(c.y)
+
+  def update(c:Coordinate, data:D):Unit =
+    if(inBounds(c))   grid(c.y)(c.x) = Some(data)
+
+  def data(c:Coordinate):Option[D] = 
+  if(inBounds(c))
+    grid(c.y)(c.x)   else   None
+
+
+end GridT
   
 
 trait GridDataT[G,D](grid:G,data:D) :
