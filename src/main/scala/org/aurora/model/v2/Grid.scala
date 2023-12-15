@@ -1,8 +1,10 @@
-package org.aurora.brainstorm
+package org.aurora.model.v2
 import org.scalajs.dom
 import scala.scalajs.js.Date
-import org.aurora.brainstorm.utils._
 import scala.collection.mutable.ListBuffer
+import org.aurora.model.v2.utils.{Coordinate, LBufferInitializerT, GridT, GridDataT}
+import com.raquo.laminar.api.L.{*, given}
+import org.scalajs.dom
 
 
 given LBufferInitializerT[Grid,GridData] with
@@ -30,6 +32,8 @@ given LBufferInitializerT[Grid,GridData] with
 
 
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
+  val focusedCoodinate  = Var("xxxxx")
+
   def emptyRow:ListBuffer[Option[GridData]] =
     ListBuffer[Option[GridData]]()
   lazy val grid = this.initLLBuffer
@@ -37,5 +41,6 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
     
 
 case class GridData(g:Grid,x:Int,y:Int,s:String) extends  GridDataT[Grid,String](g,s) :
+  val data = Var("initial")
   def coordinate: Coordinate = 
     Coordinate(x,y)

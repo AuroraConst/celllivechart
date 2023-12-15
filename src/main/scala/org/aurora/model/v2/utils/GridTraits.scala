@@ -1,6 +1,7 @@
-package org.aurora.brainstorm.utils
+package org.aurora.model.v2.utils
 
 import scala.collection.mutable.ListBuffer
+import org.scalajs.dom.Coordinates
 
 trait GridT[D](cols:Int,rows:Int) :
   lazy val grid:ListBuffer[ListBuffer[Option[D]]]
@@ -18,8 +19,11 @@ trait GridT[D](cols:Int,rows:Int) :
     if(inBounds(c))   grid(c.y)(c.x) = Some(data)
 
   def data(c:Coordinate):Option[D] = 
-  if(inBounds(c))
-    grid(c.y)(c.x)   else   None
+    if(inBounds(c))
+      grid(c.y)(c.x)   else   None
+  
+  def data(x:Int,y:Int):Option[D] = 
+    data(Coordinate(x,y))
 
 
 end GridT

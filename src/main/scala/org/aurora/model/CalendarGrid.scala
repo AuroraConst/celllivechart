@@ -14,4 +14,5 @@ case class CalendarGrid (startDate:Date, numWeeks:Int):
 
   def get(x:Int,y:Int) =
     grid.get(x,y)
+    
 

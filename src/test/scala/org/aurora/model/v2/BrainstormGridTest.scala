@@ -1,10 +1,11 @@
-package org.aurora.brainstorm
+package org.aurora.model.v2
 
 import org.scalatest._
 import wordspec._
 import matchers._
 
 import scala.scalajs.js.Date
+import org.aurora.model.v2.Grid
 
 
 class BrainstormGridTest extends AnyWordSpec with should.Matchers{
