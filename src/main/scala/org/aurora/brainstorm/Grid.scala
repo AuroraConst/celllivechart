@@ -28,12 +28,6 @@ given LBufferInitializerT[Grid,GridData] with
           }
       }
 
-      
-       
-
-
-
-
 
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
   def emptyRow:ListBuffer[Option[GridData]] =
