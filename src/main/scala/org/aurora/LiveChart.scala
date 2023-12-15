@@ -24,12 +24,14 @@ object Main:
   import org.aurora.model.ui.typeclasses.given
 
   def appElement(): Element =
-    val calgrid = CalendarGrid(new Date(),7)
+    // val calgrid = CalendarGrid(new Date(),7)
+    val g = Grid(7,13)
+
     div(
        h1("Chart", img(src:= "/vite.svg")),
-       div(child.text <-- calgrid.grid.focusedCoordinate.signal.map{s => s}
+       div(child.text <-- g.focusedCoordinate.signal.map{s => s}
        ),
-       calgrid.htmlElement(),
+       g.htmlElement(),
     )
   end appElement
 

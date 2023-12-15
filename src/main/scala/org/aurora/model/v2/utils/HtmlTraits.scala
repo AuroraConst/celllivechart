@@ -8,13 +8,11 @@ trait HtmlAble[T]:
   extension (t:T) 
     def htmlElement:HtmlElement
 
-import org.aurora.model.ui.*
 
 given HtmlAble[GridData] with
-  extension(g: GridData) 
+  extension(gd: GridData) 
     def htmlElement: HtmlElement = 
-      //TODO FINIDHg.inputElement
-      null
+      cellTextInput(gd)
 
 
 given HtmlAble[Grid] with
