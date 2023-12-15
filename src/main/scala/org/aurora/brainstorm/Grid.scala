@@ -5,33 +5,46 @@ import org.aurora.brainstorm.utils._
 import scala.collection.mutable.ListBuffer
 
 
+given LBufferInitializerT[Grid,GridData] with
+  extension(g:Grid)
+    def initLLBuffer = 
+      def row = g.xRange
+        .foldLeft ( ListBuffer[Option[GridData]]() ) {
+        (lb,_) => lb.addOne(None)
+      }
+
+       g.yRange
+        .foldLeft(ListBuffer[ListBuffer[Option[GridData]]]()){
+          (lb,y) => lb.addOne(row)
+      }
+
+    def populate(s:List[Int]):Unit  =
+      val iterator = s.toIterator
+      g.leftRightFlatCollection.foreach{ 
+        c =>   g.update(c,GridData(g,c.x,c.y,iterator.next().toString()))
+      }
+
+      
+       
+
+
+
+
+
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
-  lazy val grid = 
-    val lb = ListBuffer(ListBuffer[Option[GridData]]())
+  def emptyRow:ListBuffer[Option[GridData]] =
+    ListBuffer[Option[GridData]]()
+  lazy val grid = this.initLLBuffer
     
-    //note that after above construction, there is already one ListBuffer[?]()
-    //in the data structure
-    yRange.drop(1).foreach ( y =>
-      lb.addOne(ListBuffer[Option[GridData]]())
-    )
-    lb.foreach {
-      r => 
-        xRange.foreach{x =>
-          r.addOne(None)
-        }
-    }
-    
-    lb
-  end grid    
-    
-   
   def coordinate(data:GridData):Coordinate =
     data.coordinate
   def data(c:Coordinate):Option[GridData] = 
     if(xRange.contains(c.x) && yRange.contains(c.y))
       grid(c.y)(c.x)
       else
-      None  
+      None
+  def update(c: Coordinate, data: GridData): Unit = 
+    grid(c.y)(c.x) = Some(data)
     
 
 case class GridData(g:Grid,x:Int,y:Int,s:String) extends  GridDataT[Grid,String](g,s) :

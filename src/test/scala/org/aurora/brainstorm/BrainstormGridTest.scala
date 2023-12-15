@@ -24,8 +24,22 @@ class BrainstormGridTest extends AnyWordSpec with should.Matchers{
           r =>
             r.toString  should be ("ListBuffer(None, None, None, None, None)")
         )
-        
     }
 
+    "Populate with a List of data" in {
+      val g = Grid(5,3)
+      val dataList = (0 until 15).toList
+
+      g.populate(dataList)
+      g.grid.foreach{ row =>
+        val rowOfData = row.map(_.get.s)
+        val strRowOfData = rowOfData.foldLeft("") {
+          (acc,s) => acc +s + ","
+        }
+        info(s"$strRowOfData")
+      }
+    }
   }
+
+  
 }
