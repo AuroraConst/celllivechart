@@ -10,12 +10,6 @@ enum EditorToggleState(colorString:String):
   case RowSelected extends EditorToggleState("#9F5EB2")
   //Note: you have to surface properties of the enum to the outside
   lazy val color = colorString
-  def nextState = this match
-    case UnSelected => StateTwo
-    case StateTwo => UnSelected
-    case StateFocused => StateFocused
-    case _ => UnSelected
-    
 
 import EditorToggleState._  
 
@@ -25,7 +19,6 @@ def cellTextInput(gd:GridData): HtmlElement =
   backgroundColor <-- gd.toggleState.signal.map(_.color),
   typ := "text",
   onInput.mapToValue --> gd.cellText,
-  onDblClick--> (_ => gd.toggleState.update(_.nextState)),
   onKeyDown --> (e => 
     def htmlInputFocus(c:Coordinate) =
       gd.g.data(c).foreach{elem =>    
