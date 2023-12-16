@@ -13,7 +13,7 @@ given HtmlAble[Header] with
   extension(h:Header)
     def htmlElement: HtmlElement = th(h.header,
       backgroundColor <-- h.selected.signal.map( _ match
-          case true => "grey"
+          case true => "orange"
           case false => "purple"
       )
     )
