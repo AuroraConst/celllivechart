@@ -19,14 +19,16 @@ def LiveChart(): Unit =
 end LiveChart
 
 object Main:
-  val model = new Model
 
   import org.aurora.model.v2.Grid
   import org.aurora.model.v2.utils.{*,given}
 
   def appElement(): Element =
     import org.aurora.model.given
-    val g = Grid(15,21)
+    val g = Grid(7,10)
+    val g1 = Grid(7,3)
+    val g2 = Grid(7,10)
+    
     var firstDate = CalendarGrid(new Date(),7).firstMondayDate.toMidnight
     val dateList = g.leftRightFlatCollection
       .map{_ =>
@@ -37,6 +39,8 @@ object Main:
       .toList
  
      g.populate(dateList) 
+     g1.populate(dateList)
+     g2.populate(dateList)
 
       
     div(
@@ -52,52 +56,20 @@ object Main:
           }
       ),
       g.htmlElement,
+      div(child.text <-- g1.focusedCoodinate.signal
+        .map{ optCoord =>
+          val data = for{
+            c <- optCoord;
+            data <- g.data(c)
+          } yield (data)
+
+          data.map(_.s).getOrElse("error")
+          }
+      ),
+
+      g1.htmlElement,
+      g2.htmlElement
     )
   end appElement
-
-
-
-
-
-
-  def inputForString(valueSignal: Signal[String],
-      valueUpdater: Observer[String]): Input =
-    input(
-      typ := "text",
-      value <-- valueSignal,
-      onInput.mapToValue --> valueUpdater,
-    )
-  end inputForString
-
-  def inputForDouble(valueSignal: Signal[Double],
-      valueUpdater: Observer[Double]): Input =
-    val strValue = Var[String]("")
-    input(
-      typ := "text",
-      value <-- strValue.signal,
-      onInput.mapToValue --> strValue,
-      valueSignal --> strValue.updater[Double] { (prevStr, newValue) =>
-        if prevStr.toDoubleOption.contains(newValue) then prevStr
-        else newValue.toString
-      },
-      strValue.signal --> { valueStr =>
-        valueStr.toDoubleOption.foreach(valueUpdater.onNext)
-      },
-    )
-  end inputForDouble
-
-  def inputForInt(valueSignal: Signal[Int],
-      valueUpdater: Observer[Int]): Input =
-    input(
-      typ := "text",
-      controlled(
-        value <-- valueSignal.map(_.toString),
-        onInput.mapToValue.map(_.toIntOption).collect {
-          case Some(newCount) => newCount
-        } --> valueUpdater,
-      ),
-    )
-  end inputForInt
-
 
 end Main

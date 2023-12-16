@@ -8,8 +8,8 @@ import scala.scalajs.js.Date
 import org.aurora.model.v2.Grid
 
 
-class BrainstormGridTest extends AnyWordSpec with should.Matchers{
-  "Brainstorm Grid" should {
+class GridTest extends AnyWordSpec with should.Matchers{
+  "Grid" should {
     "Show" in {
 
         import scala.collection.mutable.ListBuffer

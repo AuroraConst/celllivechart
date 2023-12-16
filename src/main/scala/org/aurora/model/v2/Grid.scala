@@ -26,7 +26,7 @@ given LBufferInitializerT[Grid,GridData] with
         c =>   
           val data = iterator.nextOption()
           data.foreach {
-            d => g.update(c,GridData(g,  c.x,c.y,d.toString()) )
+            d => g.update(c,GridData(g,  c.x,c.y,d.toDateString()) )
           }
       }
 
