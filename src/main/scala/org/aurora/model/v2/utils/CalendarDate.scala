@@ -2,7 +2,9 @@ package org.aurora.model.v2.utils
 
 import scala.scalajs.js.{Date,Math}
 
-
+/**
+  * extension methods for Javascript type: Date
+  */
 
 enum DayOfWeek(num:Int):
   case MON extends DayOfWeek(6)
@@ -37,15 +39,13 @@ extension (d:Date)
     case dOfWeek => d.addDays(-dOfWeek.ordinal)
   }
 
-  def listOfConsecutiveDay(numDays:Int) = 
+  def listConsecutiveDays(numDays:Int) = 
     val firstDate = new Date(d.getTime())
     (0 until numDays).map{ _ =>
       val olddate = new Date(firstDate.getTime())
       firstDate.setDate(firstDate.getDate()+1)
       olddate
     }.toList
-
-
 
   
   /**

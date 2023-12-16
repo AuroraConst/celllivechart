@@ -1,17 +1,17 @@
 package org.aurora.model.v2
 import org.scalajs.dom
 import scala.scalajs.js.Date
-import scala.collection.mutable.ListBuffer
-import org.aurora.model.v2.utils.{Coordinate, LBufferInitializerT, GridT, GridDataT}
+import collection.mutable.ListBuffer
+import org.aurora.model.v2.utils.{Coordinate, LLBufferDimensionT, GridT, GridDataT}
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
 
-given LBufferInitializerT[Grid,GridData] with
+given LLBufferDimensionT[Grid,GridData] with 
   extension(g:Grid)
-    def initLLBuffer = 
+    def dim = 
       def row = g.xRange
-        .foldLeft ( ListBuffer[Option[GridData]]() ) {
+        .foldLeft ( ListBuffer[Option[GridData]]() ) { 
         (lb,_) => lb.addOne(None)
       }
 
@@ -20,23 +20,28 @@ given LBufferInitializerT[Grid,GridData] with
           (lb,y) => lb.addOne(row)
       }
 
-    def populate(d:List[Date]):Unit  =
-      val iterator = d.toIterator
-      g.leftRightFlatCollection.foreach{ 
-        c =>   
-          val data = iterator.nextOption()
-          data.foreach {
-            d => g.update(c,GridData(g,  c.x,c.y,d.toDateString()) )
-          }
-      }
 
 
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
   val focusedCoodinate  = Var[Option[Coordinate]](None)
+  val focusedGridData = focusedCoodinate.signal.map{   optCoord =>
+     val result = for{
+        c <- optCoord
+        gd <- data(c)
+      } yield(gd.s)
 
-  def emptyRow:ListBuffer[Option[GridData]] =
-    ListBuffer[Option[GridData]]()
-  lazy val grid = this.initLLBuffer
+      result.getOrElse("--")  
+  }
+  def populate(d:List[Date]):Unit  =
+    val iterator = d.toIterator
+    linearizedleftRightCoordinates.foreach { c =>   
+        val data = iterator.nextOption()
+        data.foreach {
+          d => update(c,GridData(this,c.x,c.y,d.toDateString()) )
+        }
+    }
+
+  lazy val grid = this.dim
     
     
 

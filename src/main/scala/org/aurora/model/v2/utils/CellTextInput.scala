@@ -13,7 +13,13 @@ enum EditorToggleState(colorString:String):
 
 import EditorToggleState._  
 
-  
+
+/**
+  * creates interactive edit input that behaves like a cell within a grid of cells (like a spreadsheet)
+  *
+  * @param gd
+  * @return
+  */  
 def cellTextInput(gd:GridData): HtmlElement = 
   input(
   backgroundColor <-- gd.toggleState.signal.map(_.color),
@@ -51,7 +57,14 @@ def cellTextInput(gd:GridData): HtmlElement =
   )
 
 
-def selectedRow(gd:GridData) =
+/**
+  * determines row coordinate of selected cell and generates list of GridData 
+  * that exists along tha row.
+  *
+  * @param gd
+  * @return List[GridData]
+  */  
+def selectedRow(gd:GridData) : List[GridData]=
     gd.g.xRange.toList
       .filter(_ != gd.x)
       .map{x =>gd.g.data(x,gd.y) }

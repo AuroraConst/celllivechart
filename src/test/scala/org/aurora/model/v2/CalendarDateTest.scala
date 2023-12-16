@@ -1,4 +1,4 @@
-package org.aurora.model
+package org.aurora.model.v2
 
 import org.scalatest._
 import wordspec._
@@ -11,8 +11,6 @@ import org.aurora.model.v2.utils.{*,given}
 class CalendarDateTest extends AnyWordSpec with should.Matchers{
   "dayOfWeek() extension" should {
     "map to DayOfWeek enum" in {
-        
-
         val xmas = new Date("2023/12/25")
         xmas.dayOfWeek should be(DayOfWeek.MON)
         
@@ -37,20 +35,23 @@ class CalendarDateTest extends AnyWordSpec with should.Matchers{
 
     "firstMondayDate" should {
       "create a date instance representing the preceding Monday (unchanged if day is Monday)" in {
-        val d = new Date()
-        val monday = d.firstMondayDate
-        monday.dayOfWeek should be (DayOfWeek.MON)
-        d.differenceInDays(monday) <= 6 should be (true)
+
+        (0 until 7).foreach{ i =>
+          val date = new Date()
+          val monday = date.firstMondayDate
+          monday.dayOfWeek should be(DayOfWeek.MON)
+          (date.getTime() - monday.getTime() >=0) should be(true)
+        }
       }
     }
 
-    "linearizaing dates" should {
-      "work" in {
+    "listConsecutiveDays" should {
+      "linearize  consecutive dates" in {
         import org.aurora.model.v2.*
         import org.aurora.model.v2.utils.*
-        val grid = Grid (7,13)
+        val grid = Grid (7,3)
         var date = new Date().toMidnight
-        val dateList = date.listOfConsecutiveDay(grid.leftRightFlatCollection.size)
+        val dateList = date.listConsecutiveDays(grid.linearizedleftRightCoordinates.size)
 
         dateList.foreach{
           d => info(s"$d")

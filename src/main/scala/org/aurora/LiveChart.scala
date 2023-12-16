@@ -30,7 +30,7 @@ object Main:
     val g2 = Grid(7,10)
     
     var firstDate = CalendarGrid(new Date(),7).firstMondayDate.toMidnight
-    val dateList = g.leftRightFlatCollection
+    val dateList = g.linearizedleftRightCoordinates
       .map{_ =>
         val olddate = new Date(firstDate.getTime())
         firstDate.setDate(firstDate.getDate()+1)

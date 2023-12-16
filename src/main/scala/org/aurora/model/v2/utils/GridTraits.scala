@@ -1,13 +1,13 @@
 package org.aurora.model.v2.utils
 
-import scala.collection.mutable.ListBuffer
+import collection.mutable.ListBuffer
 import org.scalajs.dom.Coordinates
 
 trait GridT[D](cols:Int,rows:Int) :
   lazy val grid:ListBuffer[ListBuffer[Option[D]]]
   val xRange = (0 until cols)
   val yRange = (0 until rows)
-  val leftRightFlatCollection = for(
+  val linearizedleftRightCoordinates = for(
     y <- yRange;
     x <- xRange
     ) yield(Coordinate(x,y))
@@ -34,10 +34,13 @@ trait GridDataT[G,D](grid:G,data:D) :
 
 
 
-import scala.collection.mutable.ListBuffer  
-trait LBufferInitializerT[T,D] :
+import collection.mutable.ListBuffer  
+/**
+  * allocates 2 dimensional ListBuffers[D]  as specified by [T]
+  */
+trait LLBufferDimensionT[T,D] :
   extension (t:T) 
-    def initLLBuffer:ListBuffer[ListBuffer[Option[D]]] 
+    def dim:ListBuffer[ListBuffer[Option[D]]] 
 
     
 

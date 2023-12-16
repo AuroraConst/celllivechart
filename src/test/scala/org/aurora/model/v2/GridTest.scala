@@ -12,7 +12,7 @@ class GridTest extends AnyWordSpec with should.Matchers{
   "Grid" should {
     "Show" in {
 
-        import scala.collection.mutable.ListBuffer
+        import collection.mutable.ListBuffer
         
         val g = Grid(5,3)
         g.yRange.size should be(3)
@@ -34,7 +34,7 @@ class GridTest extends AnyWordSpec with should.Matchers{
       import org.aurora.model.v2.utils.{*,given}
 
       val firstDate = CalendarGrid(new Date(),7).firstMondayDate
-      val dateList = g.leftRightFlatCollection
+      val dateList = g.linearizedleftRightCoordinates
         .map(c => firstDate.addDays(c.x + c.y*7))
         .toList
 
