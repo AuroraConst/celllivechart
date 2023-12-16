@@ -45,28 +45,9 @@ object Main:
       
     div(
       h1("Chart", img(src:= "/vite.svg")),
-      div(child.text <-- g.focusedCoodinate.signal
-        .map{ optCoord =>
-          val data = for{
-            c <- optCoord;
-            data <- g.data(c)
-          } yield (data)
-
-          data.map(_.s).getOrElse("error")
-          }
-      ),
+      div(child.text <-- g.focusedGridData.map(_.getOrElse("None").toString())),
       g.htmlElement,
-      div(child.text <-- g1.focusedCoodinate.signal
-        .map{ optCoord =>
-          val data = for{
-            c <- optCoord;
-            data <- g.data(c)
-          } yield (data)
-
-          data.map(_.s).getOrElse("error")
-          }
-      ),
-
+      div(child.text <-- g.focusedGridData.map(_.getOrElse("None").toString())),
       g1.htmlElement,
       g2.htmlElement
     )

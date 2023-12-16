@@ -21,39 +21,40 @@ given LLBufferDimensionT[Grid,GridData] with
       }
 
 
-
+      
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
+  lazy val grid = this.dim
   val focusedCoodinate  = Var[Option[Coordinate]](None)
   val focusedGridData = focusedCoodinate.signal.map{   optCoord =>
      val result = for{
         c <- optCoord
         gd <- data(c)
-      } yield(gd.s)
-
-      result.getOrElse("--")  
+      } yield(gd.varData.now())
+      result
   }
+
+  /**
+    * populate grid based on a List[Date]
+    */
   def populate(d:List[Date]):Unit  =
-    val iterator = d.toIterator
+    val iteratorCoordinates = d.toIterator
     linearizedleftRightCoordinates.foreach { c =>   
-        val data = iterator.nextOption()
-        data.foreach {
-          d => update(c,GridData(this,c.x,c.y,d.toDateString()) )
-        }
-    }
-
-  lazy val grid = this.dim
-    
-    
+      val optDate = iteratorCoordinates.nextOption()
+      val optData =for {  date <- optDate  } yield (GridData(this,c.x,c.y,Data(date,date.toDateString())))
+      update(c,optData)
+    } 
 
 
+case class Data(date:Date,s:String)
 
-case class GridData(g:Grid,x:Int,y:Int,s:String) extends  GridDataT[Grid,String](g,s) :
+case class GridData(g:Grid,x:Int,y:Int,d:Data) extends  GridDataT[Grid,Data](g,d) :
   import  org.aurora.model.v2.utils.EditorToggleState.* 
   import org.aurora.model.v2.utils.given
 
   lazy val inputHtmlElement = this.htmlElement
   val toggleState = Var(UnSelected)
+  val varData = Var(d)
+  val varDataWriter = varData.updater[String]((data,b) => data.copy(s = b))
 
-  val cellText = Var(s)
   def coordinate: Coordinate = 
     Coordinate(x,y)

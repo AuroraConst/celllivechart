@@ -15,8 +15,8 @@ trait GridT[D](cols:Int,rows:Int) :
   def inBounds(c:Coordinate): Boolean = 
     xRange.contains(c.x) && yRange.contains(c.y)
 
-  def update(c:Coordinate, data:D):Unit =
-    if(inBounds(c))   grid(c.y)(c.x) = Some(data)
+  def update(c:Coordinate, data:Option[D]):Unit =
+    if(inBounds(c))   grid(c.y)(c.x) = data
 
   def data(c:Coordinate):Option[D] = 
     if(inBounds(c))

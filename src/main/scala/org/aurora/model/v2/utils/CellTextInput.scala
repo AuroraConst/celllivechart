@@ -1,5 +1,5 @@
 package org.aurora.model.v2.utils
-import org.aurora.model.v2.{Grid,GridData}
+import org.aurora.model.v2.{Grid,GridData, Data}
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
@@ -24,7 +24,7 @@ def cellTextInput(gd:GridData): HtmlElement =
   input(
   backgroundColor <-- gd.toggleState.signal.map(_.color),
   typ := "text",
-  onInput.mapToValue --> gd.cellText,
+  onInput.mapToValue --> gd.varDataWriter,
   onKeyDown --> (e => 
     def htmlInputFocus(c:Coordinate) =
       gd.g.data(c).foreach{elem =>    
