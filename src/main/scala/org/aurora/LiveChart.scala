@@ -26,7 +26,7 @@ object Main:
 
   def appElement(): Element =
     import org.aurora.model.given
-    val g = Grid(7,11)
+    val g = Grid(15,21)
     var firstDate = CalendarGrid(new Date(),7).firstMondayDate.toMidnight
     val dateList = g.leftRightFlatCollection
       .map{_ =>

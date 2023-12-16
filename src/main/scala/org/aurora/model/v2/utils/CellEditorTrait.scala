@@ -4,27 +4,28 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
 enum EditorToggleState(colorString:String):
-  case StateOne extends EditorToggleState("green")
+  case UnSelected extends EditorToggleState("green")
   case StateTwo extends EditorToggleState("blue")
   case StateFocused extends EditorToggleState("red")
+  case RowSelected extends EditorToggleState("#9F5EB2")
   //Note: you have to surface properties of the enum to the outside
   lazy val color = colorString
   def nextState = this match
-    case StateOne => StateTwo
-    case StateTwo => StateOne
+    case UnSelected => StateTwo
+    case StateTwo => UnSelected
     case StateFocused => StateFocused
+    case _ => UnSelected
     
 
 import EditorToggleState._  
 
   
 def cellTextInput(gd:GridData): HtmlElement = 
-  val toggleState = Var(StateOne) 
   input(
-  backgroundColor <-- toggleState.signal.map(_.color),
+  backgroundColor <-- gd.toggleState.signal.map(_.color),
   typ := "text",
   onInput.mapToValue --> gd.cellText,
-  onDblClick--> (_ => toggleState.update(_.nextState)),
+  onDblClick--> (_ => gd.toggleState.update(_.nextState)),
   onKeyDown --> (e => 
     def htmlInputFocus(c:Coordinate) =
       gd.g.data(c).foreach{elem =>    
@@ -47,10 +48,19 @@ def cellTextInput(gd:GridData): HtmlElement =
     ),
     onFocus --> (e => 
       gd.g.focusedCoodinate.update(_ => Some(gd.coordinate) )
-      toggleState.update(_ => StateFocused)
+      selectedRow(gd).foreach(d => d.toggleState.update(_ => RowSelected))
+      gd.toggleState.update(_ => StateFocused)
     ),
     onBlur --> (e => //focus out
-      toggleState.update(_ => StateOne)
+      gd.toggleState.update(_ => UnSelected)
+      selectedRow(gd).foreach(d => d.toggleState.update(_ => UnSelected))
     ) ,
-
   )
+
+
+def selectedRow(gd:GridData) =
+    gd.g.xRange.toList
+      .filter(_ != gd.x)
+      .map{x =>gd.g.data(x,gd.y) }
+      .filter(d => d.isDefined)
+      .map(_.get)

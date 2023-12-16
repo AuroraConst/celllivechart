@@ -40,9 +40,15 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
     
     
 
+
+
 case class GridData(g:Grid,x:Int,y:Int,s:String) extends  GridDataT[Grid,String](g,s) :
+  import  org.aurora.model.v2.utils.EditorToggleState.* 
   import org.aurora.model.v2.utils.given
+
   lazy val inputHtmlElement = this.htmlElement
+  val toggleState = Var(UnSelected)
+
   val cellText = Var(s)
   def coordinate: Coordinate = 
     Coordinate(x,y)
