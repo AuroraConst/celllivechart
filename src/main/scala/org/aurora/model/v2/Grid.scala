@@ -7,23 +7,18 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
 
-given LLBufferDimensionT[Grid,GridData] with 
-  extension(g:Grid)
-    def dim = 
-      def row = g.xRange
-        .foldLeft ( ListBuffer[Option[GridData]]() ) { 
-        (lb,_) => lb.addOne(None)
-      }
+given LLBufferDimensionT[GridData] with 
+  def emptyRow = ListBuffer[Option[GridData]]() 
+  def emptyBuffer = ListBuffer[ListBuffer[Option[GridData]]]() 
 
-       g.yRange
-        .foldLeft(ListBuffer[ListBuffer[Option[GridData]]]()){
-          (lb,y) => lb.addOne(row)
-      }
+  extension(g:Grid) 
+    def initLLBuffer:ListBuffer[ListBuffer[Option[GridData]]] =
+      dim(g.cols,g.rows)
 
 
       
-case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
-  lazy val grid = this.dim
+case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
+  lazy val grid =  this.initLLBuffer
   val focusedCoodinate  = Var[Option[Coordinate]](None)
   val focusedGridData = focusedCoodinate.signal.map{   optCoord =>
      val result = for{

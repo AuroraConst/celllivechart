@@ -38,9 +38,23 @@ import collection.mutable.ListBuffer
 /**
   * allocates 2 dimensional ListBuffers[D]  as specified by [T]
   */
-trait LLBufferDimensionT[T,D] :
-  extension (t:T) 
-    def dim:ListBuffer[ListBuffer[Option[D]]] 
+trait LLBufferDimensionT[D] extends TwoDimLBufferT[D]:
+  def dim(x:Int,y:Int) =
+    def row = (0 until x)
+      .foldLeft ( emptyRow ) { 
+      (lb,_) => lb.addOne(None)
+    }
+
+    (0 until y)
+      .foldLeft(emptyBuffer){
+        (lb,y) => lb.addOne(row)
+    }
+
+
+trait TwoDimLBufferT [D] :   
+  type RowType = ListBuffer[Option[D]]
+  def emptyRow:RowType
+  def emptyBuffer:ListBuffer[RowType]
 
     
 

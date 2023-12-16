@@ -33,7 +33,7 @@ object Main:
     val dateList = g.linearizedleftRightCoordinates
       .map{_ =>
         val olddate = new Date(firstDate.getTime())
-        firstDate.setDate(firstDate.getDate()+1)
+        firstDate.addDays(1)
         olddate
       }
       .toList
@@ -47,8 +47,9 @@ object Main:
       h1("Chart", img(src:= "/vite.svg")),
       div(child.text <-- g.focusedGridData.map(_.getOrElse("None").toString())),
       g.htmlElement,
-      div(child.text <-- g.focusedGridData.map(_.getOrElse("None").toString())),
+      div(child.text <-- g1.focusedGridData.map(_.getOrElse("None").toString())),
       g1.htmlElement,
+      div(child.text <-- g2.focusedGridData.map(_.getOrElse("None").toString())),
       g2.htmlElement
     )
   end appElement
