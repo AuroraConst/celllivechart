@@ -5,7 +5,7 @@ import wordspec._
 import matchers._
 
 import scala.scalajs.js.Date
-import calendardate._
+import org.aurora.model.v2.utils.{*,given}
 
 
 class CalendarDateTest extends AnyWordSpec with should.Matchers{
@@ -41,6 +41,21 @@ class CalendarDateTest extends AnyWordSpec with should.Matchers{
         val monday = d.firstMondayDate
         monday.dayOfWeek should be (DayOfWeek.MON)
         d.differenceInDays(monday) <= 6 should be (true)
+      }
+    }
+
+    "linearizaing dates" should {
+      "work" in {
+        import org.aurora.model.v2.*
+        import org.aurora.model.v2.utils.*
+        val grid = Grid (7,13)
+        var date = new Date().toMidnight
+        val dateList = date.listOfConsecutiveDay(grid.leftRightFlatCollection.size)
+
+        dateList.foreach{
+          d => info(s"$d")
+        }  
+
       }
     }
   }

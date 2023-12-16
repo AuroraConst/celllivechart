@@ -7,6 +7,8 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import typings.std.stdStrings.text
 import scala.scalajs.js.Date
+import org.aurora.model.v2.{*,given}
+
 
 @main
 def LiveChart(): Unit =
@@ -18,20 +20,38 @@ end LiveChart
 
 object Main:
   val model = new Model
-  import model.*
 
-  import org.aurora.model.*
-  import org.aurora.model.ui.typeclasses.given
+  import org.aurora.model.v2.Grid
+  import org.aurora.model.v2.utils.{*,given}
 
   def appElement(): Element =
-    // val calgrid = CalendarGrid(new Date(),7)
-    val g = Grid(7,13)
+    import org.aurora.model.given
+    val g = Grid(7,11)
+    var firstDate = CalendarGrid(new Date(),7).firstMondayDate.toMidnight
+    val dateList = g.leftRightFlatCollection
+      .map{_ =>
+        val olddate = new Date(firstDate.getTime())
+        firstDate.setDate(firstDate.getDate()+1)
+        olddate
+      }
+      .toList
+ 
+     g.populate(dateList) 
 
+      
     div(
-       h1("Chart", img(src:= "/vite.svg")),
-       div(child.text <-- g.focusedCoordinate.signal.map{s => s}
-       ),
-       g.htmlElement(),
+      h1("Chart", img(src:= "/vite.svg")),
+      div(child.text <-- g.focusedCoodinate.signal
+        .map{ optCoord =>
+          val data = for{
+            c <- optCoord;
+            data <- g.data(c)
+          } yield (data)
+
+          data.map(_.s).getOrElse("error")
+          }
+      ),
+      g.htmlElement,
     )
   end appElement
 

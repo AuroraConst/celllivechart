@@ -20,8 +20,8 @@ given LBufferInitializerT[Grid,GridData] with
           (lb,y) => lb.addOne(row)
       }
 
-    def populate(s:List[Int]):Unit  =
-      val iterator = s.toIterator
+    def populate(d:List[Date]):Unit  =
+      val iterator = d.toIterator
       g.leftRightFlatCollection.foreach{ 
         c =>   
           val data = iterator.nextOption()
@@ -32,7 +32,7 @@ given LBufferInitializerT[Grid,GridData] with
 
 
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
-  val focusedCoodinate  = Var("xxxxx")
+  val focusedCoodinate  = Var[Option[Coordinate]](None)
 
   def emptyRow:ListBuffer[Option[GridData]] =
     ListBuffer[Option[GridData]]()
@@ -41,6 +41,8 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows) :
     
 
 case class GridData(g:Grid,x:Int,y:Int,s:String) extends  GridDataT[Grid,String](g,s) :
-  val data = Var("initial")
+  import org.aurora.model.v2.utils.given
+  lazy val inputHtmlElement = this.htmlElement
+  val cellText = Var(s)
   def coordinate: Coordinate = 
     Coordinate(x,y)

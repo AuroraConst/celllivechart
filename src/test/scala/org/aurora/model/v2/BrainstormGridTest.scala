@@ -28,17 +28,17 @@ class BrainstormGridTest extends AnyWordSpec with should.Matchers{
     }
 
     "Populate with a List of data" in {
-      val g = Grid(5,5)
+      val g = Grid(7,18)
       val dataList = (0 until 14 ).toList
+      import org.aurora.model.v2.{*,given}
+      import org.aurora.model.v2.utils.{*,given}
 
-      g.populate(dataList)
-      g.grid.foreach{ row =>
-        val rowOfData = row.map(_.map(_.s).getOrElse("N"))
-        val strRowOfData = rowOfData.foldLeft("") {
-          (acc,s) => acc +s + ","
-        }
-        info(s"$strRowOfData")
-      }
+      val firstDate = CalendarGrid(new Date(),7).firstMondayDate
+      val dateList = g.leftRightFlatCollection
+        .map(c => firstDate.addDays(c.x + c.y*7))
+        .toList
+
+      g.populate(dateList) 
     }
   }
 

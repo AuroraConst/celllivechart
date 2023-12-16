@@ -10,23 +10,19 @@ trait HtmlAble[T]:
 
 
 given HtmlAble[GridData] with
+  
   extension(gd: GridData) 
-    def htmlElement: HtmlElement = 
-      cellTextInput(gd)
+    def htmlElement: HtmlElement = cellTextInput(gd)
+      
 
 
 given HtmlAble[Grid] with
   extension(g: Grid) 
     def htmlElement: HtmlElement = 
-      def row(y:Int) = g.xRange.map(x => td(g.data(x,y).map( x => x.htmlElement  ).getOrElse(div("error")))) 
+      def row(y:Int) = g.xRange.map(x => td(g.data(x,y).map( x => x.inputHtmlElement  ).getOrElse(div("error")))) 
       def rows = g.yRange.map(y => tr(row(y)))
 
       table(
           thead(tr(th("Mon"), th("Tue"), th("Wed"), th("Thu"), th("Fri"), th("Sat"),th("Sun"))),
           tbody(rows*)
       )
-
-// given HtmlAble[CalendarGrid] with
-//   extension(cg:CalendarGrid)
-//     def htmlElement(): HtmlElement =
-//     cg.grid.htmlElement()
