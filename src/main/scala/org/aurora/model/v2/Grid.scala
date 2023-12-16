@@ -7,6 +7,10 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
 
+case class Data(date:Date,s:String)
+case class Header(header:String) :
+  val selected = Var(false)
+
 given LLBufferDimensionT[GridData] with 
   def emptyRow = ListBuffer[Option[GridData]]() 
   def emptyBuffer = ListBuffer[ListBuffer[Option[GridData]]]() 
@@ -19,13 +23,16 @@ given LLBufferDimensionT[GridData] with
       
 case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
   lazy val grid =  this.initLLBuffer
+  val headers = List("MON","TUES","WED","THU","FRI","SAT","SUN")
+    .map(h => Header(h))
   val focusedCoodinate  = Var[Option[Coordinate]](None)
   val focusedGridData = focusedCoodinate.signal.map{   optCoord =>
-     val result = for{
-        c <- optCoord
-        gd <- data(c)
-      } yield(gd.varData.now())
-      result
+    val result = for{
+      c <- optCoord
+      gd <- data(c)
+    } yield(gd.varData.now())
+    result
+  
   }
 
   /**
@@ -41,7 +48,7 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
     } 
 
 
-case class Data(date:Date,s:String)
+
 
 case class GridData(g:Grid,x:Int,y:Int,d:Data) extends  GridDataT[Grid,Data](g,d) :
   import  org.aurora.model.v2.utils.EditorToggleState.* 
@@ -49,7 +56,7 @@ case class GridData(g:Grid,x:Int,y:Int,d:Data) extends  GridDataT[Grid,Data](g,d
 
   lazy val inputHtmlElement = this.htmlElement
   val toggleState = Var(UnSelected)
-  val varData = Var(d)
+  val varData = Var[Data](d)
   val varDataWriter = varData.updater[String]((data,b) => data.copy(s = b))
 
   def coordinate: Coordinate = 

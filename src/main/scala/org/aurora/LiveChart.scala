@@ -8,6 +8,7 @@ import org.scalajs.dom
 import typings.std.stdStrings.text
 import scala.scalajs.js.Date
 import org.aurora.model.v2.{*,given}
+import org.aurora.model.v2.utils.{*,given}
 
 
 @main
@@ -20,8 +21,6 @@ end LiveChart
 
 object Main:
 
-  import org.aurora.model.v2.Grid
-  import org.aurora.model.v2.utils.{*,given}
 
   def appElement(): Element =
     import org.aurora.model.given

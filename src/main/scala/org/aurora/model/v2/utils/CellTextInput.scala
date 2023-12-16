@@ -49,10 +49,12 @@ def cellTextInput(gd:GridData): HtmlElement =
       gd.g.focusedCoodinate.update(_ => Some(gd.coordinate) )
       selectedRow(gd).foreach(d => d.toggleState.update(_ => RowSelected))
       gd.toggleState.update(_ => StateFocused)
+      gd.g.headers(gd.coordinate.x).selected.update(_ => true)
     ),
     onBlur --> (e => //focus out
       gd.toggleState.update(_ => UnSelected)
       selectedRow(gd).foreach(d => d.toggleState.update(_ => UnSelected))
+      gd.g.headers(gd.coordinate.x).selected.update(_ => false)
     ) ,
   )
 
