@@ -25,6 +25,8 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
   lazy val grid =  this.initLLBuffer
   val headers = List("MON","TUES","WED","THU","FRI","SAT","SUN")
     .map(h => Header(h))
+
+  val summaryText = Var("") 
   val focusedCoodinate  = Var[Option[Coordinate]](None)
   val focusedGridData = focusedCoodinate.signal.map{   optCoord =>
     val result = for{
@@ -56,7 +58,7 @@ case class GridData(g:Grid,x:Int,y:Int,d:Data) extends  GridDataT[Grid,Data](g,d
 
   lazy val inputHtmlElement = this.htmlElement
   val toggleState = Var(UnSelected)
-  val varData = Var[Data](d)
+  val varData = Var[Data](d) 
   val varDataWriter = varData.updater[String]((data,b) => data.copy(s = b))
 
   def coordinate: Coordinate = 

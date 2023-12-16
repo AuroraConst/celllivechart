@@ -25,6 +25,7 @@ def cellTextInput(gd:GridData): HtmlElement =
   backgroundColor <-- gd.toggleState.signal.map(_.color),
   typ := "text",
   onInput.mapToValue --> gd.varDataWriter,
+  onInput.mapToValue.map(x => gd.varData.now().toString()) --> gd.g.summaryText,
   onKeyDown --> (e => 
     def htmlInputFocus(c:Coordinate) =
       gd.g.data(c).foreach{elem =>    
