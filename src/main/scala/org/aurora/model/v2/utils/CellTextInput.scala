@@ -28,9 +28,7 @@ def cellTextInput(gd:GridData): HtmlElement =
   onInput.mapToValue.map(x => gd.varData.now().toString()) --> gd.g.summaryText,
   onKeyDown --> (e => 
     def htmlInputFocus(c:Coordinate) =
-      gd.g.data(c).foreach{elem =>    
-        elem.inputHtmlElement.ref.focus()
-      }
+      gd.g.data(c).foreach{_.inputHtmlElement.ref.focus()  }
     e.keyCode match
     case 40 =>  //down cursor
       // dom.window.console.log(s"down ${gd.coordinate}down*down*down* ")
