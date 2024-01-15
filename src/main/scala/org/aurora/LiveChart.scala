@@ -7,7 +7,7 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import typings.std.stdStrings.text
 import scala.scalajs.js.Date
-import org.aurora.model.v2.{*,given}
+import org.aurora.model.v2.*
 import org.aurora.model.v2.utils.{*,given}
 
 
