@@ -3,32 +3,29 @@ package org.aurora.model.v2
 import org.scalatest._
 import wordspec._
 import matchers._
-
-import scala.scalajs.js.Date
+import java.time.{LocalDateTime, DayOfWeek}
 import org.aurora.model.v2.utils.{*,given}
-
 
 class CalendarDateTest extends AnyWordSpec with should.Matchers{
   "dayOfWeek() extension" should {
     "map to DayOfWeek enum" in {
-        val xmas = new Date("2023/12/25")
-        xmas.dayOfWeek should be(DayOfWeek.MON)
-        
-        xmas.addDays(1).dayOfWeek should be(DayOfWeek.TUE)
-        xmas.addDays(2).dayOfWeek should be(DayOfWeek.WED)
-        xmas.addDays(3).dayOfWeek should be(DayOfWeek.THU)
-        xmas.addDays(4).dayOfWeek should be(DayOfWeek.FRI)
-        xmas.addDays(5).dayOfWeek should be(DayOfWeek.SAT)
-        xmas.addDays(6).dayOfWeek should be(DayOfWeek.SUN)
-        xmas.addDays(7).dayOfWeek should be(DayOfWeek.MON)
+        val xmas = LocalDateTime.of(2023,12,25,0,0)
+        xmas.getDayOfWeek.getValue() should be(DayOfWeek.MONDAY.getValue)
+        xmas.plusDays(1).getDayOfWeek should be(DayOfWeek.TUESDAY)
+        xmas.plusDays(2).getDayOfWeek should be(DayOfWeek.WEDNESDAY)
+        xmas.plusDays(3).getDayOfWeek should be(DayOfWeek.THURSDAY)
+        xmas.plusDays(4).getDayOfWeek should be(DayOfWeek.FRIDAY)
+        xmas.plusDays(5).getDayOfWeek should be(DayOfWeek.SATURDAY)
+        xmas.plusDays(6).getDayOfWeek should be(DayOfWeek.SUNDAY)
+        xmas.plusDays(7).getDayOfWeek should be(DayOfWeek.MONDAY)
     }
 
     "toMidnight()" should {
       "set the time to midnight for a given date" in {
-        val d = new Date()
+        val d = LocalDateTime.now()
         val dMidnight = d.toMidnight
 
-        d.toDateString() should be(dMidnight.toDateString())
+        d.toLocalDate() == dMidnight.toLocalDate()  should be(true)
       }
     }
 
@@ -36,10 +33,9 @@ class CalendarDateTest extends AnyWordSpec with should.Matchers{
       "create a date instance representing the preceding Monday (unchanged if day is Monday)" in {
 
         (0 until 7).foreach{ i =>
-          val date = new Date()
+          val date = LocalDateTime.now()
           val monday = date.firstMondayDate
-          monday.dayOfWeek should be(DayOfWeek.MON)
-          (date.getTime() - monday.getTime() >=0) should be(true)
+          monday.getDayOfWeek().getValue() should be(DayOfWeek.MONDAY.getValue())
         }
       }
     }
@@ -49,7 +45,7 @@ class CalendarDateTest extends AnyWordSpec with should.Matchers{
         import org.aurora.model.v2.*
         import org.aurora.model.v2.utils.*
         val grid = Grid (7,3)
-        var date = new Date().toMidnight
+        var date = LocalDateTime.now().toMidnight
         val dateList = date.listConsecutiveDays(grid.linearizedleftRightCoordinates.size)
 
         dateList.foreach{

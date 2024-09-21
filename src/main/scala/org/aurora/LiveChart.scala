@@ -6,9 +6,9 @@ import scala.scalajs.js.annotation.*
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import typings.std.stdStrings.text
-import scala.scalajs.js.Date
 import org.aurora.model.v2.*
 import org.aurora.model.v2.utils.{*,given}
+import java.time.LocalDateTime
 
 
 @main
@@ -28,11 +28,11 @@ object Main:
     val g1 = Grid(7,3)
     val g2 = Grid(7,10)
     
-    var firstDate = CalendarGrid(new Date(),7).firstMondayDate.toMidnight
+    var firstDate = CalendarGrid(LocalDateTime.now(),7).firstMondayDate.toMidnight
     val dateList = g.linearizedleftRightCoordinates
       .map{_ =>
-        val olddate = new Date(firstDate.getTime())
-        firstDate.addDays(1)
+        val olddate = firstDate
+        firstDate = firstDate.addDays(1)
         olddate
       }
       .toList

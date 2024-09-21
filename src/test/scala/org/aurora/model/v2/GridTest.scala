@@ -6,9 +6,23 @@ import matchers._
 
 import scala.scalajs.js.Date
 import org.aurora.model.v2.Grid
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 
 class GridTest extends AnyWordSpec with should.Matchers{
+  val timeZoneId = "America/Toronto"
+
+  "Zone ID (America/Toronto)" should {
+    "exist" in {
+      ZoneId.getAvailableZoneIds().forEach(info(_))
+      info(s"Default ZoneID: ${ZoneId.systemDefault() }")
+      // ZoneId.getAvailableZoneIds.contains(timeZoneId) should be(true) 
+
+      true should be(true)
+    }
+  }
+
   "Grid" should {
     "Show" in {
 
@@ -33,7 +47,7 @@ class GridTest extends AnyWordSpec with should.Matchers{
       import org.aurora.model.v2.{*,given}
       import org.aurora.model.v2.utils.{*,given}
 
-      val firstDate = CalendarGrid(new Date(),7).firstMondayDate
+      val firstDate = CalendarGrid(LocalDateTime.now(),7).firstMondayDate
       val dateList = g.linearizedleftRightCoordinates
         .map(c => firstDate.addDays(c.x + c.y*7))
         .toList

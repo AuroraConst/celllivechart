@@ -1,13 +1,13 @@
 package org.aurora.model.v2
 import org.scalajs.dom
-import scala.scalajs.js.Date
 import collection.mutable.ListBuffer
 import org.aurora.model.v2.utils.{Coordinate, LLBufferDimensionT, GridT, GridDataT}
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
+import java.time.LocalDateTime
 
 
-case class Data(date:Date,s:String)
+case class Data(date:LocalDateTime,s:String)
 case class Header(header:String) :
   val selected = Var(false)
 
@@ -40,12 +40,13 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
   /**
     * populate grid based on a List[Date]
     */
-  def populate(d:List[Date]):Unit  =
+  def populate(d:List[LocalDateTime]):Unit  =
+    import org.aurora.model.v2.utils.toDateTimeString
     val iteratorCoordinates = d.toIterator
     linearizedleftRightCoordinates.foreach { c =>   
       val data = for {
         date <- iteratorCoordinates.nextOption()
-      } yield  (GridData(this,c.x,c.y,Data(date,date.toDateString())))
+      } yield  (GridData(this,c.x,c.y,Data(date,date.toDateTimeString)))
       update(c,data)
     } 
 

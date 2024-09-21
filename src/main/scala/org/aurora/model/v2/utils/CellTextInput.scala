@@ -2,6 +2,7 @@ package org.aurora.model.v2.utils
 import org.aurora.model.v2.{Grid,GridData, Data}
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
+import org.aurora.model.v2.utils.given
 
 enum EditorToggleState(colorString:String):
   case UnSelected extends EditorToggleState("green")
@@ -25,7 +26,7 @@ def cellTextInput(gd:GridData): HtmlElement =
   backgroundColor <-- gd.toggleState.signal.map(_.color),
   typ := "text",
   onInput.mapToValue --> gd.varDataWriter,
-  onInput.mapToValue.map(x => gd.varData.now().toString()) --> gd.g.summaryText,
+  onInput.mapToValue.map(x => gd.varData.now()).map(data => (data.date.toDateTimeString, data.s).toString()) --> gd.g.summaryText,
   onKeyDown --> (e => 
     def htmlInputFocus(c:Coordinate) =
       gd.g.data(c).foreach{_.inputHtmlElement.ref.focus()  }
