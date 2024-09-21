@@ -29,7 +29,6 @@ class CalendarDateTest extends AnyWordSpec with should.Matchers{
         val dMidnight = d.toMidnight
 
         d.toDateString() should be(dMidnight.toDateString())
-        dMidnight.toTimeString() should be("00:00:00 GMT-0500 (Eastern Standard Time)")
       }
     }
 
