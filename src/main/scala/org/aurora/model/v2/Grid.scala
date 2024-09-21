@@ -46,7 +46,7 @@ case class Grid(cols:Int,rows:Int) extends GridT[GridData](cols,rows):
     linearizedleftRightCoordinates.foreach { c =>   
       val data = for {
         date <- iteratorCoordinates.nextOption()
-      } yield  (GridData(this,c.x,c.y,Data(date,date.toDateTimeString)))
+      } yield  (GridData(this,c.x,c.y,Data(date,"")))
       update(c,data)
     } 
 

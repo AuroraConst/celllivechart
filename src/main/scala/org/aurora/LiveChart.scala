@@ -44,8 +44,9 @@ object Main:
       
     div(
       h1("Chart", img(src:= "/vite.svg")),
-      div(child.text <-- g.summaryText,
-          child.text <-- g.focusedGridData.map(_.getOrElse("None").toString()) //TODO FIX THIS
+      div(
+        child.text <-- g.summaryText,
+          // child.text <-- g.focusedGridData.map(_.getOrElse("None").toString()) //TODO FIX THIS
       ),
       g.htmlElement,
       div(child.text <-- g1.focusedGridData.map(_.getOrElse("None").toString())),
